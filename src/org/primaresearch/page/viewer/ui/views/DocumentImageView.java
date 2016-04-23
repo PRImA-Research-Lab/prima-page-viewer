@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 PRImA Research Lab, University of Salford, United Kingdom
+ * Copyright 2015 PRImA Research Lab, University of Salford, United Kingdom
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -442,7 +442,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 	/**
 	 * Draws the given reading order element and all its child elements.
 	 */
-	void drawReadingOrderElement(GC gc, GroupMember element, int level)
+	private void drawReadingOrderElement(GC gc, GroupMember element, int level)
 	{
 		if (element == null) //Should not happen
 			return;
@@ -532,7 +532,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 	/**
 	 * Returns the colour for the reading oder group connectors.
 	 */
-	Color getReadingOrderGroupColor(int level) {
+	private Color getReadingOrderGroupColor(int level) {
 		switch(level%3)
 		{
 			case 0: return colors.ReadingOrderColor1;
