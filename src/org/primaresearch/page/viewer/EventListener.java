@@ -319,13 +319,13 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 			 @Override
 			 public void run()
 			 {
-				// create a dialog with ok and cancel buttons and a question icon
+				// create a dialog with an OK button
 				 MessageBox dialog =
 				     new MessageBox(Display.getDefault().getActiveShell(), SWT.OK);
 				 dialog.setText("XML Load Error");
 				 dialog.setMessage("An XML loading error occured. Please ensure XML validity and try again.");
 
-				 // open dialog and await user selection
+				 // open dialog and await confirmation
 				 dialog.open();
 			 }
 		});
