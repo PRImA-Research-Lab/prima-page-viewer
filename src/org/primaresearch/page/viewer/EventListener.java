@@ -25,6 +25,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.MessageBox;
 import org.primaresearch.dla.page.layout.PageLayout;
 import org.primaresearch.dla.page.layout.physical.shared.LowLevelTextType;
 import org.primaresearch.page.viewer.dla.XmlDocumentLayoutLoader;
@@ -41,6 +42,7 @@ import org.primaresearch.page.viewer.ui.views.DocumentView;
  * Event listener/handler
  * 
  * @author Christian Clausner
+ * @author Jake Sebright
  *
  */
 public class EventListener implements SelectionListener, TaskListener, KeyListener {
@@ -165,6 +167,7 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 	@Override
 	public void taskFinished(final Task task) {
 		try {
+			// Task Succeeded
 			if (task.isSuccessfull()) {
 				//Image Loader
 				if (task instanceof ImageLoader) {
@@ -174,7 +177,15 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 				else if (task instanceof XmlDocumentLayoutLoader) {
 					onXmlLoaderFinished((XmlDocumentLayoutLoader)task);
 				}
-			}		
+			}
+			// Task Failed
+			else
+			{
+				//Xml Loader
+				if (task instanceof XmlDocumentLayoutLoader) {
+					onXmlLoaderFailed((XmlDocumentLayoutLoader)task);
+				}
+			}
 		} catch (Exception exc) {
 			exc.printStackTrace(); //TODO
 		}
@@ -183,6 +194,8 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 		pageViewer.processNextTask();
 	}
 	
+
+
 	/**
 	 * Called when an image has been loaded 
 	 */
@@ -295,6 +308,29 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 		} catch (Exception exc) {
 			exc.printStackTrace(); //TODO
 		}
+	}
+	
+	/**
+	 * Called when an XML file has failed
+	 */
+	private void onXmlLoaderFailed(XmlDocumentLayoutLoader task) {
+		Display.getDefault().asyncExec(new Runnable()
+		{
+			 @Override
+			 public void run()
+			 {
+				// create a dialog with ok and cancel buttons and a question icon
+				 MessageBox dialog =
+				     new MessageBox(Display.getDefault().getActiveShell(), SWT.OK);
+				 dialog.setText("XML Load Error");
+				 dialog.setMessage("An XML loading error occured. Please ensure XML validity and try again.");
+
+				 // open dialog and await user selection
+				 dialog.open();
+			 }
+		});
+		
+		
 	}
 	
 	/**
