@@ -293,7 +293,7 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 							//Select image manually
 						    FileDialog fd = new FileDialog(pageViewer.getMainWindow().getShell(), SWT.OPEN);
 						    fd.setText("Select Image");
-						    String[] filterExt = { "*.tif", "*.jpg", "*.png"/*, "*.jp2"*/ };
+						    String[] filterExt = { "*.tif", "*.jpg", "*.png", "*.jp2" };
 						    fd.setFilterExtensions(filterExt);
 						    filePath = fd.open();
 						}
