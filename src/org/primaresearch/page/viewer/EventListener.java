@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 PRImA Research Lab, University of Salford, United Kingdom
+ * Copyright 2019 PRImA Research Lab, University of Salford, United Kingdom
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -167,7 +167,6 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 	@Override
 	public void taskFinished(final Task task) {
 		try {
-			// Task Succeeded
 			if (task.isSuccessfull()) {
 				//Image Loader
 				if (task instanceof ImageLoader) {
@@ -194,8 +193,6 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 		pageViewer.processNextTask();
 	}
 	
-
-
 	/**
 	 * Called when an image has been loaded 
 	 */
@@ -293,7 +290,7 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 							//Select image manually
 						    FileDialog fd = new FileDialog(pageViewer.getMainWindow().getShell(), SWT.OPEN);
 						    fd.setText("Select Image");
-						    String[] filterExt = { "*.tif", "*.jpg", "*.png"/*, "*.jp2"*/ };
+						    String[] filterExt = { "*.tif", "*.jpg", "*.png", "*.jp2" };
 						    fd.setFilterExtensions(filterExt);
 						    filePath = fd.open();
 						}
@@ -319,7 +316,7 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 			 @Override
 			 public void run()
 			 {
-				// create a dialog with an OK button
+				 // create a dialog with an OK button
 				 MessageBox dialog =
 				     new MessageBox(Display.getDefault().getActiveShell(), SWT.OK);
 				 dialog.setText("XML Load Error");
@@ -329,8 +326,6 @@ public class EventListener implements SelectionListener, TaskListener, KeyListen
 				 dialog.open();
 			 }
 		});
-		
-		
 	}
 	
 	/**
