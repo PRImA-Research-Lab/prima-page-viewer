@@ -41,7 +41,9 @@ public class PageContentColors {
 	public Color AdvertRegionColor;
 	public Color ChemRegionColor;
 	public Color MusicRegionColor;
+	public Color MapRegionColor;
 	public Color UnknownRegionColor;
+	public Color CustomRegionColor;
 	
 	public Color ReadingOrderColor1;
 	public Color ReadingOrderColor2;
@@ -66,7 +68,9 @@ public class PageContentColors {
 		 AdvertRegionColor = new Color(display, 70, 130, 180);
 		 ChemRegionColor = new Color(display, 255, 140,   0);
 		 MusicRegionColor = new Color(display, 148,   0, 211);
+		 MapRegionColor = new Color(display, 154, 205, 50);
 		 UnknownRegionColor = new Color(display, 100, 100, 100);
+		 CustomRegionColor = new Color(display, 99, 124, 129);
 		 
 		 ReadingOrderColor1 = new Color(display, 220, 20, 60);
 		 ReadingOrderColor2 = new Color(display, 148, 0, 211);
@@ -95,7 +99,9 @@ public class PageContentColors {
 		 AdvertRegionColor.dispose();
 		 ChemRegionColor.dispose();
 		 MusicRegionColor.dispose();
+		 MapRegionColor.dispose();
 		 UnknownRegionColor.dispose();
+		 CustomRegionColor.dispose();
 		 
 		 ReadingOrderColor1.dispose();
 		 ReadingOrderColor2.dispose();

@@ -682,6 +682,10 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 			return colors.ChemRegionColor;
 		else if (contentObj.getType() == RegionType.MusicRegion)
 			return colors.MusicRegionColor;
+		else if (contentObj.getType() == RegionType.MapRegion)
+			return colors.MapRegionColor;
+		else if (contentObj.getType() == RegionType.CustomRegion)
+			return colors.CustomRegionColor;
 		return colors.UnknownRegionColor;
 	}
 
