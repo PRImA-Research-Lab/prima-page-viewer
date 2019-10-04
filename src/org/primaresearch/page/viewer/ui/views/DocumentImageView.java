@@ -37,9 +37,9 @@ import org.primaresearch.dla.page.layout.logical.ReadingOrder;
 import org.primaresearch.dla.page.layout.logical.RegionRef;
 import org.primaresearch.dla.page.layout.physical.ContentIterator;
 import org.primaresearch.dla.page.layout.physical.ContentObject;
+import org.primaresearch.dla.page.layout.physical.Region;
 import org.primaresearch.dla.page.layout.physical.shared.LowLevelTextType;
 import org.primaresearch.dla.page.layout.physical.shared.RegionType;
-import org.primaresearch.dla.page.layout.physical.Region;
 import org.primaresearch.maths.geometry.Point;
 import org.primaresearch.maths.geometry.Polygon;
 import org.primaresearch.page.viewer.Document;
@@ -95,7 +95,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 		viewPane.setLayout(new FillLayout());
 		
 		viewPane.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-
+		
 	    imageCanvas = new SWTImageCanvas(viewPane);
 	    
 	    imageCanvas.addMouseTrackListener(this);

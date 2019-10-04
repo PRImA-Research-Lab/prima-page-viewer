@@ -15,12 +15,18 @@
  */
 package org.primaresearch.page.viewer.ui;
 
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Shell;
-import org.primaresearch.page.viewer.PageViewer;
 import org.primaresearch.page.viewer.EventListener;
+import org.primaresearch.page.viewer.PageViewer;
 import org.primaresearch.page.viewer.ui.views.DocumentImageView;
 
 /**
@@ -52,17 +58,33 @@ public class MainWindow {
 	public void init() {
 		shell.setText("Page Viewer");
 		shell.setSize(1024, 768);
-
+		
         centerToScreen();
         
 	    shell.setLayout(new GridLayout(1,false));
 
+		DropTarget dropTarget = new DropTarget(shell, DND.DROP_DEFAULT | DND.DROP_MOVE);
+		dropTarget.setTransfer(new Transfer[] { FileTransfer.getInstance()  });
+		dropTarget.addDropListener(new DropTargetAdapter() {
+		      public void drop(DropTargetEvent event) {
+		    	  String fileList[] = null;
+		    	  FileTransfer ft = FileTransfer.getInstance();
+		    	  if (ft.isSupportedType(event.currentDataType)) {
+		    	      fileList = (String[])event.data;
+		    	  }
+		    	  if (fileList != null && fileList.length > 0) {
+		    		  pageViewer.openDocument(fileList[0]);
+		    		  //System.out.println(fileList[0]);
+		    	  }
+		      }
+		    });
+		
         new MainMenu(this);
         toolbar = new MainToolbar(this);
         
         view = new DocumentImageView(pageViewer, null, shell);
         pageViewer.registerDocumentView(view);
-        
+
  		shell.open();
 	}
 	
