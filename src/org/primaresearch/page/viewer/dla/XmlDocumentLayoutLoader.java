@@ -31,13 +31,16 @@ public class XmlDocumentLayoutLoader extends Task {
 	private String filePath;
 	private Page page = null;
 	private String imageFilePath = null;
+	private String resolveDir;
 
 	/**
 	 * Constructor
 	 * @param filePath File path of the XML to be loaded
+	 * @param resolveDir Root path for resolving relative image path
 	 */
-	public XmlDocumentLayoutLoader(String filePath) {
+	public XmlDocumentLayoutLoader(String filePath, String resolveDir) {
 		this.filePath = filePath;
+		this.resolveDir = resolveDir;
 	}
 
 	@Override
@@ -67,11 +70,13 @@ public class XmlDocumentLayoutLoader extends Task {
 	public String getImageFilePath() {
 		//Get root folder from XML file path
 		String rootFolder = "";
-		if (filePath.contains(File.separator)) {
+		if (resolveDir != null)
+			rootFolder = resolveDir;
+		else if (filePath.contains(File.separator)) {
 			rootFolder = filePath.substring(0, filePath.lastIndexOf(File.separator));
 		}
 		if (!rootFolder.isEmpty())
-			imageFilePath = rootFolder + File.separator + page.getImageFilename();
+			imageFilePath = rootFolder + (rootFolder.endsWith(File.separator) ? "" : File.separator) + page.getImageFilename();
 		else
 			imageFilePath = page.getImageFilename();
 		return imageFilePath;

@@ -15,6 +15,7 @@
  */
 package org.primaresearch.page.viewer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +44,7 @@ public class PageViewer {
 	private List<Task> taskQueue = new ArrayList<Task>();
 	private XmlDocumentLayoutLoader xmlLoader;
 	private String imageFilePath;
+	private String resolveDir;
 	private Document document;
 	private Set<DocumentView> documentViews = new HashSet<DocumentView>();
 
@@ -51,15 +53,27 @@ public class PageViewer {
 	 * @param args Argument 0 (optional): Page XML file; Argument 1 (optional): Image file
 	 */
 	public static void main(String[] args) {
+		
 		String pageFilePath = null;
-		if (args.length >= 1)
-			pageFilePath = args[0];
 		String imageFilePath = null;
-		if (args.length >= 2)
-			imageFilePath = args[1];
+		String resolveDir = null;
+		for (int i=0; i<args.length; i++) {
+			if ("--resolve-dir".equals(args[i])) {
+				i++;
+				resolveDir = args[i];
+			}
+			else if (pageFilePath == null)
+				pageFilePath = args[i];
+			else 
+				imageFilePath = args[i];
+		}
+		
+		//Resolve
+		if (imageFilePath != null && resolveDir != null) 
+			imageFilePath = resolveDir + (resolveDir.endsWith(File.separator) ? "" : File.separator) + imageFilePath;
 
         Display display = new Display();
-        new PageViewer(display, pageFilePath, imageFilePath);
+        new PageViewer(display, pageFilePath, imageFilePath, resolveDir);
         display.dispose();
 	}
 	
@@ -68,9 +82,11 @@ public class PageViewer {
 	 * @param display Responsible for managing the connection between SWT and the underlying operating system
 	 * @param pageFilePath Path to page content XML file (optional, use <code>null</code> if not used)
 	 * @param imageFilePath Path to page image file (optional, use <code>null</code> if not used)
+	 * @param resolveDir Root path for loading images (using relative image path)
 	 */
-	public PageViewer(Display display, String pageFilePath, String imageFilePath) {
+	public PageViewer(Display display, String pageFilePath, String imageFilePath, String resolveDir) {
 		this.imageFilePath = imageFilePath;
+		this.resolveDir = resolveDir;
 		Shell shell = new Shell();
 		
 		//Icon
@@ -174,7 +190,7 @@ public class PageViewer {
 		imageFilePath = null;
 		Document doc = new Document();
 		setDocument(doc);
-		xmlLoader = new XmlDocumentLayoutLoader(filePath);
+		xmlLoader = new XmlDocumentLayoutLoader(filePath, resolveDir);
 		runTaskAsync(xmlLoader);
 	}
 	
