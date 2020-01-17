@@ -50,7 +50,7 @@ public class PageViewer {
 
 	/**
 	 * Main function
-	 * @param args Argument 0 (optional): Page XML file; Argument 1 (optional): Image file
+	 * @param args Argument 0 (optional): Page XML file; Argument 1 (optional): Image file; Options: --resolve-dir </path/to/img>
 	 */
 	public static void main(String[] args) {
 		
@@ -108,7 +108,7 @@ public class PageViewer {
 	 		
 	 		//Load page content now?
 	 		if (pageFilePath != null)
-	 			openDocument(pageFilePath);
+	 			openDocument(pageFilePath, imageFilePath);
 	 
 	        while (!shell.isDisposed()) {
 	        	if (!display.readAndDispatch()) {
@@ -182,16 +182,38 @@ public class PageViewer {
 			}
 		}
 	}
+
+	/**
+	 * Loads the specified PAGE file.
+	 * Resets image file path.
+	 */
+	public void openDocument(String filePath) {
+		openDocument(filePath, null);
+	}
 	
 	/**
 	 * Loads the specified PAGE file
 	 */
-	public void openDocument(String filePath) {
-		imageFilePath = null;
+	public void openDocument(String xmlFilePath, String imageFilePath) {
+		setImageFilePath(imageFilePath);
 		Document doc = new Document();
 		setDocument(doc);
-		xmlLoader = new XmlDocumentLayoutLoader(filePath, resolveDir);
+		xmlLoader = new XmlDocumentLayoutLoader(xmlFilePath, resolveDir);
 		runTaskAsync(xmlLoader);
+		updateTitle(xmlFilePath);
+	}
+	
+	private void updateTitle(String xmlFilePath) {
+		String title = "Page Viewer";
+		if (xmlFilePath != null) {
+			title += " (" + xmlFilePath;
+
+			if (imageFilePath != null) {
+				title += ", " + imageFilePath;
+			}
+			title += ")";
+		}
+		mainWindow.setTitle(title);
 	}
 	
 	/**

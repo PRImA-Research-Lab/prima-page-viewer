@@ -137,4 +137,8 @@ public class MainWindow {
 		return toolbar;
 	}
 	
+	public void setTitle(String title) {
+		shell.setText(title);
+	}
+	
 }
