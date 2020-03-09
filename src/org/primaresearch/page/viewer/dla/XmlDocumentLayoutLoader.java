@@ -30,7 +30,6 @@ import org.primaresearch.page.viewer.extra.Task;
 public class XmlDocumentLayoutLoader extends Task {
 	private String filePath;
 	private Page page = null;
-	private String imageFilePath = null;
 	private String resolveDir;
 
 	/**
@@ -68,7 +67,13 @@ public class XmlDocumentLayoutLoader extends Task {
 	 * @return The file path or an empty string if no image was specified
 	 */
 	public String getImageFilePath() {
-		//Get root folder from XML file path
+		//Do we have a full path in the XML?
+		if (page.getImageFilename() != null 
+				&& (page.getImageFilename().startsWith("/") || page.getImageFilename().contains(":"))) {
+			return page.getImageFilename();
+		}
+		
+		//Get root folder from XML file path or use resolveDir
 		String rootFolder = "";
 		if (resolveDir != null)
 			rootFolder = resolveDir;
@@ -76,10 +81,9 @@ public class XmlDocumentLayoutLoader extends Task {
 			rootFolder = filePath.substring(0, filePath.lastIndexOf(File.separator));
 		}
 		if (!rootFolder.isEmpty())
-			imageFilePath = rootFolder + (rootFolder.endsWith(File.separator) ? "" : File.separator) + page.getImageFilename();
-		else
-			imageFilePath = page.getImageFilename();
-		return imageFilePath;
+			return rootFolder + (rootFolder.endsWith(File.separator) ? "" : File.separator) + page.getImageFilename();
+
+		return page.getImageFilename();
 	}
 	
 	/**
