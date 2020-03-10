@@ -68,11 +68,15 @@ public class XmlDocumentLayoutLoader extends Task {
 	 */
 	public String getImageFilePath() {
 		//Do we have a full path in the XML?
-		if (page.getImageFilename() != null 
-				&& (page.getImageFilename().startsWith("/") || page.getImageFilename().contains(":"))) {
-			return page.getImageFilename();
+		try {
+			if (page.getImageFilename() != null 
+					&& (page.getImageFilename().startsWith("/") || page.getImageFilename().contains(":"))
+					&& new File(page.getImageFilename()).exists()) {
+				return page.getImageFilename();
+			}
+		} catch (Exception exc) {
+			exc.printStackTrace();
 		}
-		
 		//Get root folder from XML file path or use resolveDir
 		String rootFolder = "";
 		if (resolveDir != null)
