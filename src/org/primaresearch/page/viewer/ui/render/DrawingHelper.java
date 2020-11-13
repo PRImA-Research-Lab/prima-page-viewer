@@ -49,6 +49,27 @@ public class DrawingHelper {
 	}
 	
 	/**
+	 * Draws the given line string
+	 */
+	public static void drawMultiline(GC gc, Color color, Polygon coords) {
+		int polyline[] = new int[coords.getSize()*2];
+
+		for (int i=0; i<coords.getSize(); i++) {
+			Point p = coords.getPoint(i);
+			polyline[i*2] = p.x;
+			polyline[i*2+1] = p.y;
+		}
+
+		gc.setForeground(color);
+		gc.setBackground(color);
+		gc.setAlpha(150);
+		int w = gc.getLineWidth();
+		gc.setLineWidth(w * 2);
+		gc.drawPolyline(polyline);
+		gc.setLineWidth(w);
+	}
+
+	/**
 	 * Draws a line with arrow end
 	 */
 	public static void drawArrow(GC gc, int x1, int y1, int x2, int y2, ArrowShape arrow) {
