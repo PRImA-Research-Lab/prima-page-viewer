@@ -554,7 +554,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 
 		//RegionRef
 		if (element instanceof RegionRef) {
-			Region region = docLayout.getRegion(((RegionRef)element).getRegionId(), true);
+			Region region = (Region)docLayout.getRegion(((RegionRef)element).getRegionId());
 			if (region != null)	{
 				return region.getCoords().getBoundingBox().getCenter();
 			}
@@ -608,7 +608,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 
 		//RegionRef (centre = centre of bounding box)
 		if (element instanceof RegionRef) {
-			Region region = (Region)docLayout.getRegion(((RegionRef)element).getRegionId(), true);
+			Region region = (Region)docLayout.getRegion(((RegionRef)element).getRegionId());
 			if (region != null)	
 				ret = region.getCoords().getBoundingBox().getCenter();
 		}
