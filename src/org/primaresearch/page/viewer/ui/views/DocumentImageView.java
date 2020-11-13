@@ -40,6 +40,7 @@ import org.primaresearch.dla.page.layout.physical.ContentObject;
 import org.primaresearch.dla.page.layout.physical.Region;
 import org.primaresearch.dla.page.layout.physical.shared.LowLevelTextType;
 import org.primaresearch.dla.page.layout.physical.shared.RegionType;
+import org.primaresearch.dla.page.layout.physical.text.impl.TextLine;
 import org.primaresearch.maths.geometry.Point;
 import org.primaresearch.maths.geometry.Polygon;
 import org.primaresearch.page.viewer.Document;
@@ -101,9 +102,9 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 	    imageCanvas.addMouseTrackListener(this);
 	    imageCanvas.addMouseMoveListener(this);
 	    
-		parent.addMouseWheelListener(imageCanvas);
-		//parent.addMouseMoveListener(imageCanvas);
-		parent.addMouseWheelListener(this);
+		imageCanvas.addMouseWheelListener(imageCanvas);
+		//imageCanvas.addMouseMoveListener(imageCanvas);
+		imageCanvas.addMouseWheelListener(this);
 
 	    tooltip = new PageElementTooltip(viewPane.getShell());
 	    tooltip.activateHoverHelp(imageCanvas);
@@ -302,6 +303,11 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 		gc.setLineWidth(1);
 		for (ContentIterator it = docLayout.iterator(LowLevelTextType.TextLine); it.hasNext(); ) {
 			ContentObject region = it.next();
+			if (region instanceof TextLine &&
+					((TextLine)region).getBaseline() != null) {
+				Polygon baseline = ((TextLine)region).getBaseline();
+				DrawingHelper.drawMultiline(gc, getContentObjectColor(region), baseline);
+			}
 			if (region.getCoords() != null) {
 				Polygon coords = region.getCoords();
 				DrawingHelper.drawPolygon(gc, getContentObjectColor(region), coords);
@@ -554,7 +560,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 
 		//RegionRef
 		if (element instanceof RegionRef) {
-			Region region = docLayout.getRegion(((RegionRef)element).getRegionId(), true);
+			Region region = (Region)docLayout.getRegion(((RegionRef)element).getRegionId());
 			if (region != null)	{
 				return region.getCoords().getBoundingBox().getCenter();
 			}
@@ -608,7 +614,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 
 		//RegionRef (centre = centre of bounding box)
 		if (element instanceof RegionRef) {
-			Region region = (Region)docLayout.getRegion(((RegionRef)element).getRegionId(), true);
+			Region region = (Region)docLayout.getRegion(((RegionRef)element).getRegionId());
 			if (region != null)	
 				ret = region.getCoords().getBoundingBox().getCenter();
 		}
@@ -742,7 +748,8 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if ((e.stateMask & SWT.MOD1) != 0) { //CTRL
+		// non-CTRL already handled by SWTImageCanvas
+		if ((e.stateMask & (SWT.CTRL | SWT.COMMAND)) != 0) {
 			if (e.count > 0)
 				zoomIn();
 			else

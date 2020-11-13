@@ -421,10 +421,17 @@ public class SWTImageCanvas extends Canvas implements MouseWheelListener, MouseL
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if ((e.stateMask & SWT.MOD1) == 0) { //No CTRL
-			ScrollBar scrollBar = getVerticalBar();
-			scrollBar.setSelection(scrollBar.getSelection()-e.count*10);
-			scrollVertically(scrollBar);
+		// CTRL already handled by DocumentImageView
+		if ((e.stateMask & (SWT.CTRL | SWT.COMMAND)) == 0) {
+			if ((e.stateMask & (SWT.SHIFT | SWT.ALT)) != 0) {
+				ScrollBar scrollBar = getHorizontalBar();
+				scrollBar.setSelection(scrollBar.getSelection()-e.count*10);
+				scrollHorizontally(scrollBar);
+			} else {
+				ScrollBar scrollBar = getVerticalBar();
+				scrollBar.setSelection(scrollBar.getSelection()-e.count*10);
+				scrollVertically(scrollBar);
+			}
 		}
 	}
 
