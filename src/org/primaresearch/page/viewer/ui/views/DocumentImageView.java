@@ -102,9 +102,9 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 	    imageCanvas.addMouseTrackListener(this);
 	    imageCanvas.addMouseMoveListener(this);
 	    
-		parent.addMouseWheelListener(imageCanvas);
-		//parent.addMouseMoveListener(imageCanvas);
-		parent.addMouseWheelListener(this);
+		imageCanvas.addMouseWheelListener(imageCanvas);
+		//imageCanvas.addMouseMoveListener(imageCanvas);
+		imageCanvas.addMouseWheelListener(this);
 
 	    tooltip = new PageElementTooltip(viewPane.getShell());
 	    tooltip.activateHoverHelp(imageCanvas);
@@ -748,7 +748,8 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 
 	@Override
 	public void mouseScrolled(MouseEvent e) {
-		if ((e.stateMask & SWT.MOD1) != 0) { //CTRL
+		// non-CTRL already handled by SWTImageCanvas
+		if ((e.stateMask & (SWT.CTRL | SWT.COMMAND)) != 0) {
 			if (e.count > 0)
 				zoomIn();
 			else
