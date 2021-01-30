@@ -40,6 +40,7 @@ import org.primaresearch.dla.page.layout.physical.ContentObject;
 import org.primaresearch.dla.page.layout.physical.Region;
 import org.primaresearch.dla.page.layout.physical.shared.LowLevelTextType;
 import org.primaresearch.dla.page.layout.physical.shared.RegionType;
+import org.primaresearch.dla.page.layout.physical.text.impl.TextLine;
 import org.primaresearch.maths.geometry.Point;
 import org.primaresearch.maths.geometry.Polygon;
 import org.primaresearch.page.viewer.Document;
@@ -302,6 +303,14 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 		gc.setLineWidth(1);
 		for (ContentIterator it = docLayout.iterator(LowLevelTextType.TextLine); it.hasNext(); ) {
 			ContentObject region = it.next();
+			
+			//https://github.com/bertsky
+			if (region instanceof TextLine &&
+					((TextLine)region).getBaseline() != null) {
+				Polygon baseline = ((TextLine)region).getBaseline();
+				DrawingHelper.drawMultiline(gc, getContentObjectColor(region), baseline);
+			}
+			
 			if (region.getCoords() != null) {
 				Polygon coords = region.getCoords();
 				DrawingHelper.drawPolygon(gc, getContentObjectColor(region), coords);
