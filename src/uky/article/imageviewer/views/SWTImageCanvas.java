@@ -146,7 +146,7 @@ public class SWTImageCanvas extends Canvas implements MouseWheelListener, MouseL
 		}
 	}
 
-	/* Initalize the scrollbar and register listeners. */
+	/* Initialize the scrollbar and register listeners. */
 	private void initScrollBars() {
 		ScrollBar horizontal = getHorizontalBar();
 		horizontal.setEnabled(false);
@@ -271,7 +271,7 @@ public class SWTImageCanvas extends Canvas implements MouseWheelListener, MouseL
 	}
 
 	/**
-	 * Call back funtion of button "open". Will open a file dialog, and choose
+	 * Call back function of button "open". Will open a file dialog, and choose
 	 * the image file. It supports image formats supported by Eclipse.
 	 */
 	public void onFileOpen() {

@@ -539,7 +539,7 @@ public class DocumentImageView extends DocumentView implements DocumentListener,
 	}
 	
 	/**
-	 * Returns the colour for the reading oder group connectors.
+	 * Returns the colour for the reading order group connectors.
 	 */
 	private Color getReadingOrderGroupColor(int level) {
 		switch(level%3)
