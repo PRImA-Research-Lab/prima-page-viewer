@@ -69,7 +69,7 @@ public class PageViewer {
 		}
 		
 		//Resolve
-		if (imageFilePath != null && resolveDir != null) 
+		if (imageFilePath != null && resolveDir != null && ! new File(imageFilePath).isAbsolute()) 
 			imageFilePath = resolveDir + (resolveDir.endsWith(File.separator) ? "" : File.separator) + imageFilePath;
 
         Display display = new Display();
